@@ -43,6 +43,9 @@
 
     "esModuleInterop": true,
     "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-  }
+    "resolveJsonModule": true
+  },
+  "exclude": [
+    "drizzle.config.ts"
+  ]
 }
