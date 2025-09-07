@@ -1,5 +1,7 @@
 import Fastify from 'fastify';
 import * as dotenv from 'dotenv';
+import dbPlugin from './plugins/db';
+import { users } from './db/schema';
 
 dotenv.config();
 
@@ -18,12 +20,19 @@ const app = Fastify({
         },
 });
 
+app.register(dbPlugin);
+
 app.get('/healthz', async () => {
   return {
     status: 'ok',
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   };
+});
+
+app.get('/healthz/db', async (req, reply) => {
+  const rows = await app.db.select({ id: users.id }).from(users);
+  return { status: 'ok', users: rows.length };
 });
 
 const start = async () => {
